@@ -13,6 +13,8 @@
 - [5. Outcome and limits](#5-outcome-and-limits)
 - [6. Subtitles](#6-subtitles)
 
+---
+
 ## Result
 
 A correctly extracted 4K DASH MPD was accepted by N_m3u8DL-RE, but its output began with `var videoUrl` text and FFprobe reported `moov atom not found`. The investigation found a difference between the two init URLs and the thirteen distinct media URLs. Replacing the URLs using a saved HTTP response log produced an MPD that Atlas tested successfully. The resulting video played. The test replaced **all 15** distinct URLs, so it does not prove that replacing only the init URLs would have sufficed (might be interesting to look at at a later time?).
