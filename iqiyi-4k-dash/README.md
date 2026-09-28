@@ -1,7 +1,7 @@
 # Case study on iQIYI 4K DASH delivery
 
 **People:** slappepolsen and twinkgenius (atlas)   
-**Scope:** 4K MPD extraction, DASH byte ranges, HTTP responses, N_m3u8DL-RE behavior, Python workflow, and subtitles.
+**Keywords:** 4K, MPD, DASH, HTTP, CDN, Widevine, N_m3u8DL-RE, Python, and subtitles.
 
 ## Result
 
