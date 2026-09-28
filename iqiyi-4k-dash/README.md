@@ -34,13 +34,13 @@ The [DASH MPD XML schema](https://github.com/Dash-Industry-Forum/MPEG-Conformanc
 ## 3. Python scripts and file handoffs
 The scripts were developed incrementally. The current workflow uses `run_workflow.py` to execute the required scripts in sequence.
 
-`extract_mpd.py` extracts the escaped DASH MPD from a saved website response and produces `video.txt` and the decoded, validated `video.mpd`. This step is only needed when starting from the original response rather than an existing MPD.
+[`extract_mpd.py`](scripts/extract_mpd.py) extracts the escaped DASH MPD from a saved website response and produces `video.txt` and the decoded, validated `video.mpd`. This step is only needed when starting from the original response rather than an existing MPD.
 
-`request_v2.py` reads `video.mpd`, identifies its distinct resource URLs and requests each URL once. It saves the HTTP status, redirect destination and applicable small text responses to `requests_plain.txt`. It does not Base64-encode or save complete media files. For the investigated manifest, this reduced the request count from 1,720 MPD entries to 15 distinct URLs.
+[`request_v2.py`](scripts/request_v2.py) reads `video.mpd`, identifies its distinct resource URLs and requests each URL once. It saves the HTTP status, redirect destination and applicable small text responses to `requests_plain.txt`. It does not Base64-encode or save complete media files. For the investigated manifest, this reduced the request count from 1,720 MPD entries to 15 distinct URLs.
 
-`replace_urls_from_log.py` reads `video.mpd` and `requests_plain.txt`, matches the recorded URL destinations and produces `video_urls_replaced.mpd`. It preserves the original byte ranges and other XML metadata. This step works entirely from the saved files and makes no additional HTTP requests.
+[`replace_urls_from_log.py`](scripts/replace_urls_from_log.py) reads `video.mpd` and `requests_plain.txt`, matches the recorded URL destinations and produces `video_urls_replaced.mpd`. It preserves the original byte ranges and other XML metadata. This step works entirely from the saved files and makes no additional HTTP requests.
 
-`run_workflow_v2.py` is the current launcher. It runs the existing scripts in order and stops if any step fails. When given an existing MPD, it skips extraction.
+[`run_workflow_v2.py`](scripts/run_workflow_v2.py) is the current launcher. It runs the existing scripts in order and stops if any step fails. When given an existing MPD, it skips extraction.
 
 > **Default usage:**
 > 
@@ -61,11 +61,11 @@ This runs:
 
 
 ### Earlier and alternative scripts
-The original `request.py` requested every MPD entry and Base64-encoded complete response bodies. Its output reached approximately 8.5 GB after 48 entries. 
+The original [`request.py`](scripts/alt/request.py) requested every MPD entry and Base64-encoded complete response bodies. Its output reached approximately 8.5 GB after 48 entries. 
 
-`request_unique.py` reduced duplicate requests but retained the same full-body encoding problem. Subsequent versions introduced streaming, disabled automatic redirects and retained only the relevant response information. The simplified version is now used as `request_v2.py`.
+[`request_unique.py`](scripts/alt/request_unique.py) reduced duplicate requests but retained the same full-body encoding problem. Subsequent versions introduced streaming, disabled automatic redirects and retained only the relevant response information. The simplified version is now used as [`request_v2.py`](scripts/request_v2.py).
 
-`mpd_map.py` is an alternative for creating and applying manually supplied URL mappings. It is not part of the current workflow because `replace_urls_from_log.py` reads the mappings directly from `requests_plain.txt`.
+[`mpd_map.py`](scripts/alt/mpd_map.py) is an alternative for creating and applying manually supplied URL mappings. It is not part of the current workflow because [`replace_urls_from_log.py`](scripts/replace_urls_from_log.py) reads the mappings directly from `requests_plain.txt`.
 
 ## 4. What the HTTP log established
 
@@ -81,7 +81,7 @@ The investigated MPD contained 1,720 URL references pointing to 15 distinct reso
 
 The successful test used the saved HTTP responses to generate `video_urls_replaced.mpd`, replacing all 1,720 references while preserving their original byte ranges and other XML metadata. Atlas processed the revised MPD with N_m3u8DL-RE and confirmed playable video.
 
-The current workflow automates the preparation stages through `run_workflow_v2.py`. It produces a revised MPD but does not itself run N_m3u8DL-RE (you know how to do that part).
+The current workflow automates the preparation stages through [`run_workflow_v2.py`](scripts/run_workflow_v2.py). It produces a revised MPD but does not itself run N_m3u8DL-RE (you know how to do that part).
 
 The replacement CDN URLs contain signed parameters and may expire, so you must always use a fresh `.mpd`.
 
