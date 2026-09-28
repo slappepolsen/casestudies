@@ -32,7 +32,7 @@ The N_m3u8DL-RE repository was investigated by searching for `DownloadUtil`, `Ht
 The [DASH MPD XML schema](https://github.com/Dash-Industry-Forum/MPEG-Conformance-and-reference-source/blob/master/conformance/MPDValidator/schemas/DASH-MPD.xsd) was used to confirm the meanings of `SegmentList`, `SegmentURL`, `media`, and `mediaRange`. The key implementation distinction is that an HTTP redirect and a `200 OK` response containing a URL as text are not equivalent.
 
 ## 3. Python scripts and file handoffs
-The scripts were developed incrementally. The current workflow uses `run_workflow.py` to execute the required scripts in sequence.
+The scripts were developed incrementally. The current workflow uses [`run_workflow_v2.py`](scripts/run_workflow_v2.py) to execute the required scripts in sequence.
 
 [`extract_mpd.py`](scripts/extract_mpd.py) extracts the escaped DASH MPD from a saved website response and produces `video.txt` and the decoded, validated `video.mpd`. This step is only needed when starting from the original response rather than an existing MPD.
 
