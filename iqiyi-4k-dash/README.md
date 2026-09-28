@@ -3,6 +3,16 @@
 **People:** slappepolsen and twinkgenius (atlas)   
 **Keywords:** 4K, MPD, DASH, HTTP, CDN, Widevine, N_m3u8DL-RE, Python, and subtitles.
 
+## Table of contents
+
+- [Result](#result)
+- [1. Extracting and inspecting the MPD](#1-extracting-and-inspecting-the-mpd)
+- [2. Tracing the downloader](#2-tracing-the-downloader)
+- [3. Python scripts and file handoffs](#3-python-scripts-and-file-handoffs)
+- [4. What the HTTP log established](#4-what-the-http-log-established)
+- [5. Outcome and limits](#5-outcome-and-limits)
+- [6. Subtitles](#6-subtitles)
+
 ## Result
 
 A correctly extracted 4K DASH MPD was accepted by N_m3u8DL-RE, but its output began with `var videoUrl` text and FFprobe reported `moov atom not found`. The investigation found a difference between the two init URLs and the thirteen distinct media URLs. Replacing the URLs using a saved HTTP response log produced an MPD that Atlas tested successfully. The resulting video played. The test replaced **all 15** distinct URLs, so it does not prove that replacing only the init URLs would have sufficed (might be interesting to look at at a later time?).
